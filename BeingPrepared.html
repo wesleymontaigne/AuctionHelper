@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Being prepared</title>
+	<link rel="stylesheet” href=”css/bootstrap.css">
+<link rel="stylesheet” href=”css/bootstrap-responsive.css">
+<meta name="viewport” content=”width=device-width, initial-scale=1.0" >
+</head>
+<body>
+<p>You can submit any type of SQL statements using the mysqli_query() fnction, but it's not recommended to use that for submitting INSERT statements.</p>
+<p>All too often, begnning PHP coders retrive data from an HTML form, place the data directly in an INSERT statement string , then submit the string yo the MySQL server, like this:</p>
+<h6>$empid = $_POST['employeid']</h6>
+<h6>$lname= $_POST['lastname']</h6>
+<h6>$fname=$_POST['firstname']</h6>
+<h6>$startdate=$_POST['startdate']</h6>
+<h6>$salary=$_POST['salary']</h6>
+
+<h6>$query= "INSERT INTO employes VALUES ('$empid','$lname','$fname','$startdate','$salary')"</h6>
+<h6>$dbresult=$bd->query($query);</h6>
+
+<p>This method works, but it's a dangererous way of inserting data into your database! Theres no garantee that the person using the HTML form will enter the correct data into all the data fields.Ther's also no garantee meant to cause issues with the database.</p>
+<p> The safer way  of submiting data in an INSERT is to use a PREPARED STATEMENT, wich defines a tamplete of the query you want to execute on the MySQL server, and then sends the data separate from the template.</p>
+<p>The MySQL server stores the prepared statement, and then matches the submitted data against the tamplete.This helpes filter out malicious data.Plus, it can help speed up executing mutiple INSERT statement on the server.You just submit one tamplete statement.Then you can aplly multiple data statement against the same template.</p>
+<p>With a prepared statement, you create the query string as normal, but instead of inlcuid data values, you use a question mark as a placeholde for each value, like this:</p>
+<h6>$query="INSERT INTO employes VALUES (?,?,?,?,?,?)"</h6>
+<p>Them you use the mysqli_prepare() function to submit it:</p>
+<h6>$constmt = $mysqli_prepare($con,$quey);</h6>
+<p>if you're using the object-oriented coding style,it looks like this:</p>
+<h6>$dbstmt=$db->prepare($query);</h6>
+<p>Now the MySQL server has the prepared statement, but it doesn't have any data to plug into it. To do that you use the mysqli_param() function: </p>
+<h6>mysqli_param($constmt, issssi,$empid,$lname,$fname,$startdate,$salary);</h6>
+<p>The first paramenter is the result from the prepared statement you submited.The second parameter is somewhat odd.It defines the data of each of the data values as a single charecter ina string value:</p>
+<ol>
+  <li>b: A blb data type</li>
+  <li>i: A integer data type</li>
+  <li>d: A double data type</li>
+  <li>s: A string data type</li>
+</ol>
+
+
+</body>
+</html>
